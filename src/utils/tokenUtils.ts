@@ -12,7 +12,7 @@ if (!ACCESS_TOKEN_SECRET || !REFERSH_TOKEN_SECRET) {
     throw new Error(`Missing required environment variables: ACCESS_TOKEN_SECRET or REFRESH_TOKEN_SECRET`);
 }
 
-export const generateAccessToken = function (user: IUserDTO): string {
+export const generateAccessToken = function (user: Partial<IUserDTO>): string {
     return jwt.sign(
         { user_id: user.user_id, email: user.email, role: user.role },
         ACCESS_TOKEN_SECRET,
