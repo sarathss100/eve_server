@@ -14,7 +14,7 @@ if (!ACCESS_TOKEN_SECRET || !REFERSH_TOKEN_SECRET) {
 
 export const generateAccessToken = function (user: IUserDTO): string {
     return jwt.sign(
-        { userId: user.user_id, email: user.email, role: user.role },
+        { user_id: user.user_id, email: user.email, role: user.role },
         ACCESS_TOKEN_SECRET,
         { expiresIn: '40m' }
     )
@@ -22,7 +22,7 @@ export const generateAccessToken = function (user: IUserDTO): string {
 
 export const generateRefreshToken = function (user: IUserDTO): string {
     return jwt.sign(
-        { userId: user.user_id, email: user.email, role: user.role },
+        { user_id: user.user_id, email: user.email, role: user.role },
         REFERSH_TOKEN_SECRET,
         { expiresIn: '7d' }
     )
@@ -68,3 +68,11 @@ export const decodeAndValidateToken = function (accessToken: string): string {
 
     return user_id;
 };
+
+export function extractUserIdFromToken(token: string): string {
+    const userId = decodeAndValidateToken(token);
+    if (!userId) {
+        throw new AuthenticationError(ErrorMessages.USER_ID_MISSING_IN_TOKEN, StatusCodes.BAD_REQUEST);
+    }
+    return userId;
+}

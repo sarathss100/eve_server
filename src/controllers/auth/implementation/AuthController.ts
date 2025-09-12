@@ -4,7 +4,8 @@ import IAuthService from '../../../services/auth/interfaces/IAuthService';
 import { sendSuccessResponse } from '../../../utils/responseHandler';
 import { StatusCodes } from '../../../constants/statusCodes'; 
 import { SuccessMessages } from '../../../constants/successMessages'; 
-import { handleControllerError } from '../../../error/AppError'; 
+import { AuthenticationError, handleControllerError, ServerError } from '../../../error/AppError'; 
+import { ErrorMessages } from '../../../constants/errorMessages';
 
 export default class AuthController implements IAuthController {
     private readonly _authService: IAuthService;
@@ -54,6 +55,33 @@ export default class AuthController implements IAuthController {
             });
 
             sendSuccessResponse(response, StatusCodes.CREATED, SuccessMessages.SIGNIN_SUCCESS, { user_id, role });
+        } catch (error) {
+            handleControllerError(response, error);
+        }
+    }
+
+    async signout(request: Request, response: Response): Promise<void> {
+        try {
+            const { accessToken } = request.cookies;
+
+            if (!accessToken) {
+                throw new AuthenticationError(ErrorMessages.ACCESS_TOKEN_NOT_FOUND, StatusCodes.UNAUTHORIZED);
+            }
+
+            const signoutStatus = await this._authService.signout(accessToken);
+            if (!signoutStatus) {
+                throw new ServerError(ErrorMessages.SIGNOUT_ERROR, StatusCodes.INTERNAL_SERVER_ERROR);
+            }
+
+            response.clearCookie('accessToken', {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production'? true : false,
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                domain: process.env.NODE_ENV === 'production' ? `${process.env.BASE_URL}` : undefined,
+                path: '/'
+            });
+
+            sendSuccessResponse(response, StatusCodes.OK, SuccessMessages.SIGNOUT_SUCCESS);
         } catch (error) {
             handleControllerError(response, error);
         }

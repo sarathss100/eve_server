@@ -1,7 +1,7 @@
 import IAuthService from '../interfaces/IAuthService';
 import IAuthRepository from '../../../repositories/auth/interfaces/IAuthRepository';
 import IHash from '../../../utils/auth/interfaces/IHash';
-import { generateAccessToken, generateRefreshToken } from '../../../utils/tokenUtils';
+import { extractUserIdFromToken, generateAccessToken, generateRefreshToken } from '../../../utils/tokenUtils';
 import RedisService from '../../redis/RedisService';
 import { ServerError, ValidationError, wrapServiceError } from '../../../error/AppError';
 import { ErrorMessages } from '../../../constants/errorMessages';
@@ -129,6 +129,22 @@ export default class AuthService implements IAuthService {
         } catch (error) {
             throw wrapServiceError(error);
         };
+    }
+
+    async signout(accessToken: string): Promise<boolean> {
+        try {
+            const userId = extractUserIdFromToken(accessToken);
+
+            const isRefreshTokenRemoved = await RedisService.deleteRefreshToken(userId);
+
+            if (!isRefreshTokenRemoved!) {
+                throw new ServerError(ErrorMessages.REFRESH_TOKEN_REMOVAL_ERROR, StatusCodes.INTERNAL_SERVER_ERROR);
+            }
+            
+            return true;
+        } catch (error) {
+            throw wrapServiceError(error);
+        }
     }
 }
 

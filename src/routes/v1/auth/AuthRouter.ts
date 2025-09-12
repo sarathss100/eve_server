@@ -6,6 +6,7 @@ const createAuthRouter = function(authController: IAuthController): Router {
 
     router.post('/register', authController.registerUser.bind(authController));
     router.post('/signin', authController.signin.bind(authController));
+    router.post('/signout', authController.signout.bind(authController));
 
     return router;
 };

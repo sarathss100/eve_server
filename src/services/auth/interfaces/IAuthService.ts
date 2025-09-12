@@ -5,4 +5,5 @@ import ISigninDTO from '../../../dtos/auth/ISigninDTO';
 export default interface IAuthService {
     registerUser(userData: IRegisterDTO): Promise<IRegisterationResponseDTO>;
     signin(formData: ISigninDTO): Promise<IRegisterationResponseDTO>;
+    signout(accessToken: string): Promise<boolean>;
 }
