@@ -26,4 +26,18 @@ export default class AuthRepository implements IAuthRepository {
             throw new Error(`${(error as Error).message}`);
         }
     }
+
+    async getUserDetails(user_id: string): Promise<IUserDocument> {
+        try {
+            const result = await this.baseRepo.findById(user_id);
+
+            if (!result) {
+                throw new Error(`User with ID ${user_id} not found`);
+            }
+            
+            return result;
+        } catch (error) {
+            throw new Error(`${(error as Error).message}`);
+        }
+    }
 }

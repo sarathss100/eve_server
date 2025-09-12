@@ -10,7 +10,8 @@ import UserMapper from '../../../mappers/user/UserMapper';
 import IRegisterDTO from '../../../dtos/auth/IRegisterDTO';
 import { RegistrationSchema } from '../../../validations/auth/registration.validation';
 import IRegisterationResponseDTO from '../../../dtos/auth/IRegistrationResponseDTO';
-
+import ISigninDTO from '../../../dtos/auth/ISigninDTO';
+import { SigninSchema } from '../../../validations/auth/signin.validation copy';
 
 export default class AuthService implements IAuthService {
     private _authRepository: IAuthRepository;
@@ -80,5 +81,54 @@ export default class AuthService implements IAuthService {
             throw wrapServiceError(error);
         };
     } 
+
+    async signin(formData: ISigninDTO): Promise<IRegisterationResponseDTO> {
+        try {
+            SigninSchema.parse(formData);
+
+            const userDetails = await this._authRepository.checkUserExist(formData.email);
+
+            if (!userDetails) {
+                throw new ValidationError(ErrorMessages.USER_NOT_FOUND, StatusCodes.BAD_REQUEST);
+            }
+
+            const mapToDTO = UserMapper.toIUserDTO(userDetails);
+
+            const hashedPasswordInDatabase = mapToDTO.password;
+
+            const userProvidedPassword = formData.password;
+
+            // Check whether the password matches
+            const isMatched = await this._hash.verify(userProvidedPassword, hashedPasswordInDatabase!);
+
+            if (!isMatched) {
+                throw new ValidationError(ErrorMessages.INVALID_CREDENTIALS, StatusCodes.UNAUTHORIZED);
+            } 
+
+            // Generate tokens using the utility functions 
+            let accessToken, refreshToken;
+
+            try {
+                accessToken = generateAccessToken(mapToDTO);
+                refreshToken = generateRefreshToken(mapToDTO);
+            } catch (error) {
+                if (error) throw new ServerError(ErrorMessages.INTERNAL_SERVER_ERROR, StatusCodes.INTERNAL_SERVER_ERROR);
+            }
+
+            if (!accessToken || !refreshToken) throw new ServerError(ErrorMessages.INTERNAL_SERVER_ERROR, StatusCodes.INTERNAL_SERVER_ERROR);
+
+            //Store the refresh token in Redis with a TTL 
+            const REFRESH_TOKEN_TTL = 7 * 24 * 60 * 60;
+            try {
+                await RedisService.storeRefreshToken(mapToDTO.user_id, refreshToken, REFRESH_TOKEN_TTL);
+            } catch (error) {
+                if (error) throw new ServerError(ErrorMessages.REFRESH_TOKEN_STORAGE_ERROR, StatusCodes.INTERNAL_SERVER_ERROR);
+            }
+             
+            return { userDetails: mapToDTO, accessToken };
+        } catch (error) {
+            throw wrapServiceError(error);
+        };
+    }
 }
 

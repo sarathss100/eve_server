@@ -35,5 +35,28 @@ export default class AuthController implements IAuthController {
             handleControllerError(response, error);
         }
     }
+
+    async signin(request: Request, response: Response): Promise<void> {
+        try {
+            const formData = request.body;
+            
+            const signinResponse = await this._authService.signin(formData);
+
+            const { accessToken } = signinResponse;
+            const { user_id, role } = signinResponse.userDetails;
+
+            response.cookie('accessToken', accessToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production' ? true : false,
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                domain: process.env.NODE_ENV === 'production' ? `${process.env.BASE_URL}` : undefined,
+                path: '/'
+            });
+
+            sendSuccessResponse(response, StatusCodes.CREATED, SuccessMessages.SIGNIN_SUCCESS, { user_id, role });
+        } catch (error) {
+            handleControllerError(response, error);
+        }
+    }
 }
  
