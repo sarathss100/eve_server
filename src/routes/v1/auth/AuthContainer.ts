@@ -1,6 +1,6 @@
 import AuthService from '../../../services/auth/implementation/AuthService';
 import AuthController from '../../../controllers/auth/implementation/AuthController';
-import IAuthController from '../../../controllers/auth/interfaces/IAuthController';
+import IAuthController from '../../../controllers/auth/interface/IAuthController';
 import BcryptHasher from '../../../utils/auth/implementation/hash';
 import AuthRepository from '../../../repositories/auth/implementation/AuthRepository';
 import createAuthRouter from './AuthRouter';

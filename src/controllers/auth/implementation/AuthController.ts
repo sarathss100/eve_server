@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import IAuthController from '../interfaces/IAuthController';
+import IAuthController from '../interface/IAuthController';
 import IAuthService from '../../../services/auth/interfaces/IAuthService';
 import { sendSuccessResponse } from '../../../utils/responseHandler';
 import { StatusCodes } from '../../../constants/statusCodes'; 

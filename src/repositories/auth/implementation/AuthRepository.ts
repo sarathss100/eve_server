@@ -1,6 +1,6 @@
-import IAuthRepository from '../interfaces/IAuthRepository';
+import IAuthRepository from '../interface/IAuthRepository';
 import IUserDocument from '../../../models/user/interfaces/IUser';
-import IBaseRepository from '../../base/interfaces/IBaseRepository';
+import IBaseRepository from '../../base/interface/IBaseRepository';
 import BaseRepository from '../../base/implementation/BaseRepository';
 import { UserModel } from '../../../models/user/model/user.model';
 

@@ -1,5 +1,5 @@
 import IAuthService from '../interfaces/IAuthService';
-import IAuthRepository from '../../../repositories/auth/interfaces/IAuthRepository';
+import IAuthRepository from '../../../repositories/auth/interface/IAuthRepository';
 import IHash from '../../../utils/auth/interfaces/IHash';
 import { extractUserIdFromToken, generateAccessToken, generateRefreshToken } from '../../../utils/tokenUtils';
 import RedisService from '../../redis/RedisService';

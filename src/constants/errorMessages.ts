@@ -7,6 +7,8 @@ export const ErrorMessages = {
     USER_ALREADY_EXISTS: 'A user with this email already exists. Please use a different email.',
     USER_NOT_FOUND: 'The account does not exist. Please check the provided email or register new account.',
     INVALID_CREDENTIALS: 'Invalid email or password. Please verify your credentials and try again.',
+    MISSING_DETAILS: 'Missing some fields. Please verify your credentials and try again.',
+    ROLE_CHANGE_FAILED: 'Faile to change role. Please try again.',
     PASSWORD_MATCH_ERROR: 'The entered password matches your current password. Please enter a new password.',
     TOKEN_VERIFICATION_FAILED: 'Access token verification failed. Please log in again to generate a new token.',
     REFRESH_TOKEN_STORAGE_ERROR: 'An error occurred while storing the refresh token. Please try again later.',
