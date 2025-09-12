@@ -11,7 +11,7 @@ import IRegisterDTO from '../../../dtos/auth/IRegisterDTO';
 import { RegistrationSchema } from '../../../validations/auth/registration.validation';
 import IRegisterationResponseDTO from '../../../dtos/auth/IRegistrationResponseDTO';
 import ISigninDTO from '../../../dtos/auth/ISigninDTO';
-import { SigninSchema } from '../../../validations/auth/signin.validation copy';
+import { SigninSchema } from '../../../validations/auth/signin.validation';
 
 export default class AuthService implements IAuthService {
     private _authRepository: IAuthRepository;
@@ -24,25 +24,25 @@ export default class AuthService implements IAuthService {
 
     async registerUser(userData: IRegisterDTO): Promise<IRegisterationResponseDTO> {
         try {
-            RegistrationSchema.parse(userData); 
+            const validatedData = RegistrationSchema.parse(userData);
 
-            if (!userData.email) {
+            if (!validatedData.email) {
                 throw new ValidationError(ErrorMessages.EMAIL_MISSING, StatusCodes.BAD_REQUEST);
             }
 
-            const existingUser = await this._authRepository.checkUserExist(userData.email);
+            const existingUser = await this._authRepository.checkUserExist(validatedData.email);
 
             if (existingUser) {
                 throw new ValidationError(ErrorMessages.USER_ALREADY_EXISTS, StatusCodes.BAD_REQUEST);
             }
 
-            if (!userData.password) {
+            if (!validatedData.password) {
                 throw new ValidationError(ErrorMessages.PASSWORD_MISSING, StatusCodes.BAD_REQUEST);
             }
 
-            const hashedPassword = await this._hash.hash(userData.password);
+            const hashedPassword = await this._hash.hash(validatedData.password);
 
-            const parsedUserData = { ...userData, password: hashedPassword };
+            const parsedUserData = { ...validatedData, password: hashedPassword };
 
             const mappedData = UserMapper.toModel(parsedUserData);
 

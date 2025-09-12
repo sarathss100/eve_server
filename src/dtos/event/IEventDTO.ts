@@ -1,6 +1,6 @@
 
-interface IEvent {
-    _id: string;
+interface IEventDTO {
+    event_id: string;
     organizer_id: string;
     title: string;
     description: string;
@@ -9,4 +9,4 @@ interface IEvent {
     total_tickets: number;
 };
 
-export default IEvent;
+export default IEventDTO;

@@ -5,10 +5,6 @@ const createOrganizerRouter = function(organizerController: IOrganizerController
     const router = Router();
 
     router.post('/toggleRole', organizerController.toggleUserRole.bind(organizerController));
-    router.post('/event', organizerController.createEvent.bind(organizerController));
-    router.patch('/event', organizerController.updateEvent.bind(organizerController));
-    router.delete('/event/:id', organizerController.deleteEvent.bind(organizerController));
-    router.get('/event', organizerController.getAllEvents.bind(organizerController));
 
     return router;
 };
