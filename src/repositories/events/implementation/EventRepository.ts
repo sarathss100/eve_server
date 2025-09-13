@@ -15,4 +15,14 @@ export default class EventRepository implements IEventRepository {
             throw new Error(`Failed to create event: ${(error as Error).message}`);
         }
     }
+
+    async getAllEvents(): Promise<IEventDocument[]> {
+        try {
+            const result = await this.baseRepo.findAll();
+
+            return result;
+        } catch (error) {
+            throw new Error(`Failed to get events: ${(error as Error).message}`);
+        }
+    }
 }

@@ -1,19 +1,19 @@
-import OrganizerController from '../../../controllers/organizer/implementation/OrganizerController';
-import IOrganizerController from '../../../controllers/organizer/interface/IOrganizerController';
-import OrganizerRepository from '../../../repositories/organizer/implementation/OrganizerRepository';
-import OrganizerService from '../../../services/organizer/implementation/OrganizerService';
-import createOrganizerRouter from './EventsRouter';
+import EventController from '../../../controllers/events/implementation/EventController';
+import IEventController from '../../../controllers/events/interface/IEventController';
+import EventRepository from '../../../repositories/events/implementation/EventRepository';
+import EventService from '../../../services/events/implementation/EventService';
+import createEventRouter from './EventsRouter';
 
-class OrganizerContainer {
-    public readonly controller: IOrganizerController;
-    public readonly router: ReturnType<typeof createOrganizerRouter>;
+class EventContainer {
+    public readonly controller: IEventController;
+    public readonly router: ReturnType<typeof createEventRouter>;
 
     constructor() {
-        const repository = new OrganizerRepository();
-        const service = new OrganizerService(repository);
-        this.controller = new OrganizerController(service);
-        this.router = createOrganizerRouter(this.controller);
+        const repository = new EventRepository();
+        const service = new EventService(repository);
+        this.controller = new EventController(service);
+        this.router = createEventRouter(this.controller);
     }
 }
 
-export default OrganizerContainer;
+export default EventContainer;

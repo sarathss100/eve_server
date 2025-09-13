@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import IOrganizerController from '../../../controllers/organizer/interface/IOrganizerController';
+import IEventController from '../../../controllers/events/interface/IEventController';
 
-const createOrganizerRouter = function(organizerController: IOrganizerController): Router {
+const createEventRouter = function(eventController: IEventController): Router {
     const router = Router();
 
-    router.post('/toggleRole', organizerController.toggleUserRole.bind(organizerController));
+    router.get('/', eventController.getAllEvents.bind(eventController));
 
     return router;
 };
 
-export default createOrganizerRouter;
+export default createEventRouter;
