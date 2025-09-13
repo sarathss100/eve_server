@@ -16,11 +16,14 @@ export default class OrganizerController implements IOrganizerController {
 
     async toggleUserRole(request: Request, response: Response): Promise<void> {
         try {
-            const { user_id, role } = request.body;
+            const { new_role } = request.body;
+            const { id } = request.params;
             
-            const isToggled = await this._organizerService.toggleUserRole(user_id, role);
+            const userDetails = await this._organizerService.toggleUserRole(id, new_role);
+
+            const { user_id, name, role, email } = userDetails;
     
-            sendSuccessResponse(response, StatusCodes.OK, SuccessMessages.OPERATION_SUCCESS, { isToggled });
+            sendSuccessResponse(response, StatusCodes.OK, SuccessMessages.OPERATION_SUCCESS, { user_id, name, role, email });
         } catch (error) {
             handleControllerError(response, error);
         }
@@ -81,6 +84,16 @@ export default class OrganizerController implements IOrganizerController {
             const events = await this._organizerService.getAllEvents();
     
             sendSuccessResponse(response, StatusCodes.OK, SuccessMessages.OPERATION_SUCCESS, { events });
+        } catch (error) {
+            handleControllerError(response, error);
+        }
+    }
+
+    async getAllUsers(request: Request, response: Response): Promise<void> {
+        try {
+            const users = await this._organizerService.getAllUsers();
+    
+            sendSuccessResponse(response, StatusCodes.OK, SuccessMessages.OPERATION_SUCCESS, { users });
         } catch (error) {
             handleControllerError(response, error);
         }

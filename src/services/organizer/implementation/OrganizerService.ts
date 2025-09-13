@@ -8,6 +8,8 @@ import IEventDTO from '../../../dtos/event/IEventDTO';
 import { EventSchema } from '../../../validations/event/event.validation';
 import { extractUserIdFromToken } from '../../../utils/tokenUtils';
 import EventMapper from '../../../mappers/event/EventMapper';
+import IUserDTO from '../../../dtos/user/IUserDTO';
+import UserMapper from '../../../mappers/user/UserMapper';
 
 export default class OrganizerService implements IOrganizerService {
     private _organizerRepository: IOrganizerRepository;
@@ -15,19 +17,21 @@ export default class OrganizerService implements IOrganizerService {
         this._organizerRepository = organizerRepository;
     }
 
-    async toggleUserRole(user_id: string, new_role: string): Promise<boolean> {
+    async toggleUserRole(user_id: string, new_role: string): Promise<IUserDTO> {
         try {
             if (!user_id || !new_role) {
                 throw new ValidationError(ErrorMessages.MISSING_DETAILS, StatusCodes.INVALID_INPUT);
             }
 
-            const isToggled = await this._organizerRepository.toggleUserRole(user_id, new_role);
+            const updatedUser = await this._organizerRepository.toggleUserRole(user_id, new_role);
 
-            if (!isToggled) {
+            if (!updatedUser) {
                 throw new ServerError(ErrorMessages.ROLE_CHANGE_FAILED, StatusCodes.BAD_REQUEST);
             }
 
-            return !!isToggled;
+            const userDetails = UserMapper.toIUserDTO(updatedUser);
+
+            return userDetails;
         } catch (error) {
             throw wrapServiceError(error);
         }
@@ -104,6 +108,18 @@ export default class OrganizerService implements IOrganizerService {
             const events = EventMapper.toDTOs(results);
 
             return events;
+        } catch (error) {
+            throw wrapServiceError(error);
+        }
+    }
+
+    async getAllUsers(): Promise<IUserDTO[]> {
+        try {
+            const results = await this._organizerRepository.getAllUsers();
+
+            const users = UserMapper.toDTOs(results);
+
+            return users;
         } catch (error) {
             throw wrapServiceError(error);
         }

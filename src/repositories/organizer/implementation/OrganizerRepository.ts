@@ -56,4 +56,14 @@ export default class OrganizerRepository implements IOrganizerRepository {
             throw new Error(`Failed to get events: ${(error as Error).message}`);
         }
     }
+
+    async getAllUsers(): Promise<IUserDocument[]> {
+        try {
+            const result = await this.userBaseRepo.findAll();
+
+            return result;
+        } catch (error) {
+            throw new Error(`Failed to get attendees: ${(error as Error).message}`);
+        }
+    }
 }

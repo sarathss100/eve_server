@@ -7,4 +7,5 @@ export default interface IOrganizerRepository {
     updateEvent(eventData: Partial<IEventDocument>): Promise<IEventDocument | null>;
     deleteEvent(event_id: string): Promise<IEventDocument | null>;
     getAllEvents(): Promise<IEventDocument[]>;
+    getAllUsers(): Promise<IUserDocument[]>;
 }
