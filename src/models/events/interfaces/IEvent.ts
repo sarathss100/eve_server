@@ -8,6 +8,7 @@ interface IEventDocument extends Document {
     date: Date;
     location: string;
     total_tickets: number;
+    price: number;
     createdAt?: Date;
     updatedAt?: Date;
     __v?: number;

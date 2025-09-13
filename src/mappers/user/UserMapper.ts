@@ -12,6 +12,7 @@ export default class UserMapper {
       phone_number: data.phone_number,
       role: data.role,
       password: data.password,
+      joined_date: data.createdAt,
     };
 
     return dto;

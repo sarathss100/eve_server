@@ -7,6 +7,7 @@ interface IEventDTO {
     date: Date;
     location: string;
     total_tickets: number;
+    price: number;
 };
 
 export default IEventDTO;
