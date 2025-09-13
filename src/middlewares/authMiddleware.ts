@@ -11,14 +11,7 @@ import ITokenPayload from '../dtos/auth/ITokenPayloadDTO';
 export const authorizeRoles = function (...allowedRoles: UserRole[]) {
     return async (request: IAuthenticationRequest, response: Response, next: NextFunction) => {
         try {
-            const authHeader = request.cookies;
-            if (!authHeader) {
-                sendErrorResponse(response, StatusCodes.UNAUTHORIZED, ErrorMessages.ACCESS_TOKEN_NOT_FOUND);
-                return;
-            }
-
-            let accessToken = authHeader.accessToken;
-
+            let { accessToken } = request.cookies;
             let decoded = verifyAccessToken(accessToken);
 
             if (!decoded) {

@@ -21,7 +21,7 @@ export default class AuthController implements IAuthController {
             const registrationResponse = await this._authService.registerUser(userData);
 
             const { accessToken } = registrationResponse;
-            const { user_id, role } = registrationResponse.userDetails;
+            const { user_id, role, name, email } = registrationResponse.userDetails;
             
             response.cookie('accessToken', accessToken, {
                 httpOnly: true,
@@ -31,7 +31,7 @@ export default class AuthController implements IAuthController {
                 path: '/'
             });
 
-            sendSuccessResponse(response, StatusCodes.CREATED, SuccessMessages.SIGNUP_SUCCESS, { user_id, role });
+            sendSuccessResponse(response, StatusCodes.CREATED, SuccessMessages.SIGNUP_SUCCESS, { user_id, role, name, email });
         } catch (error) {
             handleControllerError(response, error);
         }
@@ -44,7 +44,7 @@ export default class AuthController implements IAuthController {
             const signinResponse = await this._authService.signin(formData);
 
             const { accessToken } = signinResponse;
-            const { user_id, role } = signinResponse.userDetails;
+            const { user_id, role, name, email } = signinResponse.userDetails;
 
             response.cookie('accessToken', accessToken, {
                 httpOnly: true,
@@ -54,7 +54,7 @@ export default class AuthController implements IAuthController {
                 path: '/'
             });
 
-            sendSuccessResponse(response, StatusCodes.CREATED, SuccessMessages.SIGNIN_SUCCESS, { user_id, role });
+            sendSuccessResponse(response, StatusCodes.CREATED, SuccessMessages.SIGNIN_SUCCESS, { user_id, role, name, email });
         } catch (error) {
             handleControllerError(response, error);
         }
