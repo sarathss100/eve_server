@@ -1,6 +1,6 @@
 
 const corsOptions = {
-    origin: [`${process.env.FROND_END_URL}`],
+    origin: [`${process.env.FRONT_END_URL}`],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true
 }
