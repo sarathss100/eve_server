@@ -8,11 +8,6 @@ import WebhookController from './controllers/webhook/WebhookController';
 
 const app = express();
 
-
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(cors(corsOptions));
-
 const webhookController = new WebhookController();
 
 app.post(
@@ -20,6 +15,10 @@ app.post(
   express.raw({ type: 'application/json' }),
   webhookController.stripeWebhook.bind(webhookController)
 );
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(cors(corsOptions));
+
 
 app.use(express.json());
 
