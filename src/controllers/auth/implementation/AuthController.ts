@@ -26,7 +26,7 @@ export default class AuthController implements IAuthController {
             response.cookie('accessToken', accessToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production' ? true : false,
-                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                sameSite: 'none',
                 path: '/'
             });
 
@@ -48,7 +48,7 @@ export default class AuthController implements IAuthController {
             response.cookie('accessToken', accessToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production' ? true : false,
-                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                sameSite: 'none',
                 path: '/'
             });
 
@@ -74,7 +74,7 @@ export default class AuthController implements IAuthController {
             response.clearCookie('accessToken', {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production'? true : false,
-                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                sameSite: 'none',
                 path: '/'
             });
 
