@@ -80,8 +80,8 @@ export default class PaymentService implements IPaymentService {
                 event_id: paymentData.event_id?.toString() || '',
                 amount: amount.toString()
             },
-            success_url: `${process.env.FROND_END_URL}/`,
-            cancel_url: `${process.env.FROND_END_URL}/`,
+            success_url: `${process.env.FRONT_END_URL}/`,
+            cancel_url: `${process.env.FRONT_END_URL}/`,
             client_reference_id: userId,
             
             payment_intent_data: {
