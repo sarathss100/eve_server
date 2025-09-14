@@ -10,6 +10,8 @@ import { extractUserIdFromToken } from '../../../utils/tokenUtils';
 import EventMapper from '../../../mappers/event/EventMapper';
 import IUserDTO from '../../../dtos/user/IUserDTO';
 import UserMapper from '../../../mappers/user/UserMapper';
+import ITicketDTO from '../../../dtos/ticket/ITicketDTO';
+import TicketMapper from '../../../mappers/ticket/TicketMapper';
 
 export default class OrganizerService implements IOrganizerService {
     private _organizerRepository: IOrganizerRepository;
@@ -89,11 +91,9 @@ export default class OrganizerService implements IOrganizerService {
 
     async deleteEvent(event_id: string): Promise<boolean> {
         try {
+            await this._organizerRepository.deleteTickets(event_id);
+            
             const isDeleted = await this._organizerRepository.deleteEvent(event_id);
-
-            if (!isDeleted) {
-                throw new ServerError(ErrorMessages.OPERATION_FAILED, StatusCodes.INTERNAL_SERVER_ERROR);
-            }
 
             return !!isDeleted;
         } catch (error) {
@@ -120,6 +120,18 @@ export default class OrganizerService implements IOrganizerService {
             const users = UserMapper.toDTOs(results);
 
             return users;
+        } catch (error) {
+            throw wrapServiceError(error);
+        }
+    }
+    
+    async getAllTickets(): Promise<ITicketDTO[]> {
+        try {
+            const results = await this._organizerRepository.getAllTickets();
+
+            const tickets = TicketMapper.toDTOs(results);
+
+            return tickets;
         } catch (error) {
             throw wrapServiceError(error);
         }

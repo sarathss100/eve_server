@@ -10,6 +10,7 @@ const createOrganizerRouter = function(organizerController: IOrganizerController
     router.patch('/event', organizerController.updateEvent.bind(organizerController));
     router.delete('/event/:id', organizerController.deleteEvent.bind(organizerController));
     router.get('/events', organizerController.getAllEvents.bind(organizerController));
+    router.get('/tickets', organizerController.getAllTickets.bind(organizerController));
 
     return router;
 };

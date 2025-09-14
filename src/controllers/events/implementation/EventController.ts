@@ -22,4 +22,16 @@ export default class EventController implements IEventController {
             handleControllerError(response, error);
         }
     }
+
+    async getEvent(request: Request, response: Response): Promise<void> {
+        try {
+            const { id } = request.params;
+
+            const event = await this._eventService.getEvent(id);
+    
+            sendSuccessResponse(response, StatusCodes.OK, SuccessMessages.OPERATION_SUCCESS, { event });
+        } catch (error) {
+            handleControllerError(response, error);
+        }
+    }
 }

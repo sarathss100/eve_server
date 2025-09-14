@@ -16,7 +16,7 @@ export const generateAccessToken = function (user: Partial<IUserDTO>): string {
     return jwt.sign(
         { user_id: user.user_id, email: user.email, role: user.role },
         ACCESS_TOKEN_SECRET,
-        { expiresIn: '40m' }
+        { expiresIn: '60m' }
     )
 };
 

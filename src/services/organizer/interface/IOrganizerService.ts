@@ -1,4 +1,5 @@
 import IEventDTO from "../../../dtos/event/IEventDTO";
+import ITicketDTO from "../../../dtos/ticket/ITicketDTO";
 import IUserDTO from "../../../dtos/user/IUserDTO";
 
 export default interface IOrganizerService {
@@ -8,4 +9,5 @@ export default interface IOrganizerService {
     deleteEvent(event_id: string): Promise<boolean>;
     getAllEvents(): Promise<IEventDTO[]>;
     getAllUsers(): Promise<IUserDTO[]>;
+    getAllTickets(): Promise<ITicketDTO[]>;
 }

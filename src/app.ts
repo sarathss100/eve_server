@@ -4,13 +4,24 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import corsOptions from './utils/corsOptions';
 import router from './routes/routes';
+import WebhookController from './controllers/webhook/WebhookController';
 
 const app = express();
 
-app.use(express.json());
+
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors(corsOptions));
+
+const webhookController = new WebhookController();
+
+app.post(
+  '/api/v1/webhook',
+  express.raw({ type: 'application/json' }),
+  webhookController.stripeWebhook.bind(webhookController)
+);
+
+app.use(express.json());
 
 app.use('/api', router);
 

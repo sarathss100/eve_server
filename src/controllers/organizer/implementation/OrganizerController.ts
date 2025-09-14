@@ -98,4 +98,14 @@ export default class OrganizerController implements IOrganizerController {
             handleControllerError(response, error);
         }
     }
+
+    async getAllTickets(request: Request, response: Response): Promise<void> {
+        try {
+            const tickets = await this._organizerService.getAllTickets();
+    
+            sendSuccessResponse(response, StatusCodes.OK, SuccessMessages.OPERATION_SUCCESS, { tickets });
+        } catch (error) {
+            handleControllerError(response, error);
+        }
+    }
 }

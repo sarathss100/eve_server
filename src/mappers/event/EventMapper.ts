@@ -12,7 +12,10 @@ export default class EventMapper {
       description: data.description,
       date: data.date,
       location: data.location,
+      initial_ticket_count: data.initial_ticket_count,
       total_tickets: data.total_tickets,
+      price: data.price,
+      createdAt: data.createdAt,
     };
 
     return dto;
@@ -33,6 +36,7 @@ export default class EventMapper {
       date: data.date,
       location: data.location,
       total_tickets: data.total_tickets,
+      price: data.price,
     };
 
     if (data.event_id) {

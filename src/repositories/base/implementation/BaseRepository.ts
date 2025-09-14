@@ -25,15 +25,23 @@ class BaseRepository<T extends Document> implements IBaseRepository<T> {
     }
 
     async findAll(): Promise<T[]> {
-        return this._model.find().exec();
+        return this._model.find().sort({ createdAt: -1 }).exec();
     }
 
     async updateOne(filter: FilterQuery<T>, update: UpdateQuery<T>): Promise<T | null> {
         return this._model.findOneAndUpdate(filter, update, { new: true });
     }
 
+    async updateMany(filter: FilterQuery<T>, update: UpdateQuery<T>): Promise<{ acknowledged: boolean; modifiedCount: number }> {
+        return this._model.updateMany(filter, update).exec();
+    }
+
     async deleteOne(filter: FilterQuery<T>): Promise<T | null> {
         return this._model.findOneAndDelete(filter).exec();
+    }
+
+    async deleteMany(filter: FilterQuery<T>): Promise<{ acknowledged: boolean; deletedCount: number }> {
+        return this._model.deleteMany(filter).exec();
     }
 }
 

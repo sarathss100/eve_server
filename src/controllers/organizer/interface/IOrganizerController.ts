@@ -7,4 +7,5 @@ export default interface IOrganizerController {
     deleteEvent(request: Request, response: Response): Promise<void>;
     getAllEvents(request: Request, response: Response): Promise<void>;
     getAllUsers(request: Request, response: Response): Promise<void>;
+    getAllTickets(request: Request, response: Response): Promise<void>;
 }

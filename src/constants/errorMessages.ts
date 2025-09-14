@@ -11,6 +11,7 @@ export const ErrorMessages = {
     MISSING_DETAILS: 'Missing some fields. Please verify your credentials and try again.',
     ROLE_CHANGE_FAILED: 'Faile to change role. Please try again.',
     EVENT_ID_MISSING: 'Event ID is missing. Ensure the request includes a valid "event_id".',
+    EVENT_NOT_FOUND: 'The event does not exist. Please try again.',
 
     PASSWORD_MATCH_ERROR: 'The entered password matches your current password. Please enter a new password.',
     TOKEN_VERIFICATION_FAILED: 'Access token verification failed. Please log in again to generate a new token.',
